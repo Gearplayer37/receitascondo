@@ -5,7 +5,6 @@ const path = require('path');
 
 const app = express();
 
-// Configuração para usar o cookie-parser e express-session
 app.use(cookieParser());
 app.use(session({
     secret: 'minhachave',
@@ -13,7 +12,6 @@ app.use(session({
     saveUninitialized: true,
 }));
 
-// Configuração do Express para servir arquivos estáticos da pasta 'public'
 app.use(express.static(path.join(__dirname, 'public')));
 
 const produtos = [
@@ -22,7 +20,6 @@ const produtos = [
     { id: 3, nome: 'Bife', preco: 40 },
 ];
 
-// Rota para exibir a lista de produtos na raiz "/"
 app.get('/', (req, res) => {
     res.send(`
         <html>
@@ -45,7 +42,6 @@ app.get('/', (req, res) => {
     `);
 });
 
-// Rota para adicionar um produto ao carrinho
 app.get('/adicionar/:id', (req, res) => {
     const id = parseInt(req.params.id);
     const produto = produtos.find(p => p.id === id);
@@ -60,18 +56,16 @@ app.get('/adicionar/:id', (req, res) => {
     res.redirect('/');
 });
 
-// Rota para remover o último item do carrinho
 app.get('/remover', (req, res) => {
     const carrinho = req.session.carrinho || [];
 
     if (carrinho.length > 0) {
-        carrinho.pop(); // Remover o último item do carrinho
+        carrinho.pop(); 
     }
 
     res.redirect('/carrinho');
 });
 
-// Rota para exibir o carrinho de compras
 app.get('/carrinho', (req, res) => {
     const carrinho = req.session.carrinho || [];
     const total = carrinho.reduce((acc, produto) => acc + produto.preco, 0);
@@ -98,7 +92,6 @@ app.get('/carrinho', (req, res) => {
     `);
 });
 
-// Inicia o servidor na porta 3000
-app.listen(3000, () => {
+app.listen(process.env.PORT || 3000, () => {
     console.log("Aplicação rodando na porta 3000");
 });
