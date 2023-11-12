@@ -6,5 +6,12 @@
   },
   "scripts": {
     "build": "mkdir build && echo 'Build complete.'"
-  }
+  },
+  "name": "cookiesedu2",
+  "version": "1.0.0",
+  "main": "app.js",
+  "devDependencies": {},
+  "author": "",
+  "license": "ISC",
+  "description": ""
 }
