@@ -5,6 +5,7 @@ const path = require('path');
 
 const app = express();
 
+// Configuração para usar o cookie-parser e express-session
 app.use(cookieParser());
 app.use(session({
     secret: 'minhachave',
@@ -12,7 +13,7 @@ app.use(session({
     saveUninitialized: true,
 }));
 
-// Configurando o Express para servir arquivos estáticos
+// Configuração do Express para servir arquivos estáticos da pasta 'public'
 app.use(express.static(path.join(__dirname, 'public')));
 
 const produtos = [
@@ -21,7 +22,8 @@ const produtos = [
     { id: 3, nome: 'Bife', preco: 40 },
 ];
 
-app.get('/produtos', (req, res) => {
+// Rota para exibir a lista de produtos na raiz "/"
+app.get('/', (req, res) => {
     res.send(`
         <html>
         <head>
@@ -43,6 +45,7 @@ app.get('/produtos', (req, res) => {
     `);
 });
 
+// Rota para adicionar um produto ao carrinho
 app.get('/adicionar/:id', (req, res) => {
     const id = parseInt(req.params.id);
     const produto = produtos.find(p => p.id === id);
@@ -54,9 +57,10 @@ app.get('/adicionar/:id', (req, res) => {
         req.session.carrinho.push(produto);
     }
 
-    res.redirect('/produtos');
+    res.redirect('/');
 });
 
+// Rota para remover o último item do carrinho
 app.get('/remover', (req, res) => {
     const carrinho = req.session.carrinho || [];
 
@@ -67,10 +71,9 @@ app.get('/remover', (req, res) => {
     res.redirect('/carrinho');
 });
 
+// Rota para exibir o carrinho de compras
 app.get('/carrinho', (req, res) => {
     const carrinho = req.session.carrinho || [];
-    const carrinhoCookie = req.cookies.carrinhoCookie || [];
-
     const total = carrinho.reduce((acc, produto) => acc + produto.preco, 0);
 
     res.send(`
@@ -87,12 +90,7 @@ app.get('/carrinho', (req, res) => {
                 ).join("")}
             </ul>
             <p>Total: R$${total}</p>
-            <ul>
-                ${carrinhoCookie.map(
-                    (produto) => `<li>${produto.nome}</li>`
-                ).join("")}
-            </ul>
-            <a class="button button-green" href="/produtos">Continuar comprando</a>
+            <a class="button button-green" href="/">Continuar comprando</a>
             <br>
             <a class="button button-red" href="/remover">Remover último item do carrinho</a>
         </body>
@@ -100,4 +98,7 @@ app.get('/carrinho', (req, res) => {
     `);
 });
 
-app.listen(3000, () => { console.log("Aplicação rodando") });
+// Inicia o servidor na porta 3000
+app.listen(3000, () => {
+    console.log("Aplicação rodando na porta 3000");
+});
