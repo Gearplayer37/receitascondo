@@ -1,0 +1,26 @@
+# como fazer deployment
+- colocar o projeto no github
+- entrar no site do vercel, criar uma conta usando o github
+- criar um projeto e selecionar o repositório no github
+- criar o arquivo vercel.json
+- adicionar o o conteúdo abaixo: 
+```
+{
+    "version": 2,
+    "builds": [
+        {
+            "src": "./app.js",
+            "use": "@vercel/node"
+        }
+    ],
+    "routes": [
+        {
+            "src": "/(.*)",
+            "dest": "/app.js"
+        }
+    ]
+}
+```
+
+- atualizar o github
+- verificar o projeto no vercel
