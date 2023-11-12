@@ -4,9 +4,6 @@
     "express": "^4.18.2",
     "express-session": "^1.17.3"
   },
-  "scripts": {
-    "build": "mkdir build && echo 'Build complete.'"
-  },
   "name": "cookiesedu2",
   "version": "1.0.0",
   "main": "app.js",
